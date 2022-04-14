@@ -1,0 +1,43 @@
+// @import 'antd/dist/antd.less';
+// @import 'antd/dist/antd.compact.less'; // 引入官方提供的紧凑 less 样式入口文件
+
+@media (prefers-color-scheme: dark) {
+  // .test() {@functions: ~`(function() {
+  //   return 'red'
+  // })()`;}
+  @import 'antd/dist/antd.dark.less'; // 引入官方提供的暗色 less 样式入口文件
+  // body {
+  //   background: .test();
+  // }
+}
+
+@media (prefers-color-scheme: light) {
+  @import 'antd/dist/antd.less';
+}
+
+@media (prefers-color-scheme: no-preference) {
+  @import 'antd/dist/antd.compact.less';
+}
+
+// @primary-color: #2777E5; // 全局主色
+// @link-color: #1890ff; // 链接色
+// @success-color: #2777E5; // 成功色
+// @warning-color: #faad14; // 警告色
+// @error-color: #f5222d; // 错误色
+// @font-size-base: 13px; // 主字号
+// @heading-color: rgba(0, 0, 0, 0.85); // 标题色
+// @text-color: rgba(0, 0, 0, 0.65); // 主文本色
+// @text-color-secondary: rgba(0, 0, 0, 0.45); // 次文本色
+// @disabled-color: rgba(0, 0, 0, 0.25); // 失效色
+// @border-radius-base: 2px; // 组件/浮层圆角
+// @border-color-base: #d9d9d9; // 边框色
+// @box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05); // 浮层阴影
+
+// @modal-heading-color: #ccc;
+// @modal-header-bg: #1e1d1d;
+// @modal-content-bg: #383838;
+// @disabled-color: rgba(255, 255, 255, 0.4); // 失效色
+// @disabled-bg: rgba(39, 119, 229, 0.4);
+// @btn-disable-color: @disabled-color;
+// @btn-disable-bg: @disabled-bg;
+// @btn-disable-border: rgba(39, 119, 229, 0.39);
