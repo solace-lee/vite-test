@@ -7,7 +7,7 @@ import { resolve } from "path";
 export default config => {
   return defineConfig({
     server: {
-      https: true,
+      https: false,
     },
     resolve: {
       alias: {
