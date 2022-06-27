@@ -15,7 +15,9 @@ function App() {
     <div className='App'>
       <Button.Group>
         <Button type='primary' onClick={() => { goto('ThreeD') }}>ThreeD</Button>
+        <Button type='primary' onClick={() => { goto('Line') }}>ThreeD-line</Button>
         <Button type='dashed' onClick={() => { goto('WebglTest') }}>Webgl</Button>
+        <Button type='default' onClick={() => { goto('TextTest') }}>Text</Button>
       </Button.Group>
       <Outlet />
     </div>

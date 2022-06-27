@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import * as three from "three";
+import * as three from 'three';
 
 interface Props {
   dom: HTMLElement | null
