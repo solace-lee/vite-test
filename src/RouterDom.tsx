@@ -4,6 +4,7 @@ import ThreeD from './page/app/threeD/threeD'
 import Line from './page/app/line/index'
 import Text from './page/app/text/index'
 import WebglTest from './page/app/webgl/index'
+import CornerstonePage from './page/app/cornerstone/index'
 
 export default function RouterDom() {
 
@@ -15,6 +16,7 @@ export default function RouterDom() {
         <Route path='Line' element={<Line dom={null} />} />
         <Route path='TextTest' element={<Text dom={null} />} />
       </Route>
+      <Route path='/cornerstone3D' element={<CornerstonePage dom={null} />} />
     </Routes>
   </HashRouter>
 }
