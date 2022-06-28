@@ -11,7 +11,7 @@ export default config => {
     },
     resolve: {
       alias: {
-        "@": resolve(__dirname, "src"),
+        "@": resolve(__dirname, "./src/"),
       },
     },
     plugins: [react()],
