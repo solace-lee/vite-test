@@ -6,6 +6,7 @@ import { IStackViewport } from "../../../utils/core/src/types";
 import dicomParser from 'dicom-parser';
 import cornerstoneWADOImageLoader from 'cornerstone-wado-image-loader';
 import { Button } from "antd";
+import { HTTP } from "@/common";
 
 interface Props {
   dom: HTMLElement | null
@@ -24,7 +25,7 @@ cornerstoneWADOImageLoader.configure({
 });
 
 function CornerstonePage(params: Props) {
-  const renderingEngineRef:any = useRef(null)
+  const renderingEngineRef: any = useRef(null)
 
   async function renderImage(element: HTMLElement) {
     await cornerstone.init()
@@ -94,6 +95,9 @@ function CornerstonePage(params: Props) {
 
 
   useEffect(() => {
+    const request = new HTTP()
+    console.log({ request });
+
     const content = document.getElementById('cornerstone3D-1-1')
     if (content) {
       const element: HTMLDivElement = document.createElement('div')
