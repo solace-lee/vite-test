@@ -1,28 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 // import * as cornerstone from '@cornerstonejs/core'
 // import { IStackViewport } from "@cornerstonejs/core/dist/esm/types";
-import * as cornerstone from '../../../utils/core/src/index'
-import { IStackViewport, VolumeLoaderFn } from "../../../utils/core/src/types";
+// import * as cornerstone from '../../../utils/core/src/index'
+// import { IStackViewport, VolumeLoaderFn } from "../../../utils/core/src/types";
 import { Button } from "antd";
-import { HTTP } from "@/common";
+// import { HTTP } from "@/common";
 import { initPVCore } from "../../../utils/cornerstonePV";
 import { ORIENTATION } from "../../../utils/core/src/constants";
-import { cornerstoneStreamingImageVolumeLoader, sharedArrayBufferImageLoader } from "../../../utils/streaming-image-volume-loader/src";
+// import { ORIENTATION } from "@cornerstonejs/core/dist/esm/constants";
+import { cornerstoneStreamingImageVolumeLoader } from "../../../utils/streaming-image-volume-loader/src/index";
+// import { cornerstoneStreamingImageVolumeLoader } from "@cornerstonejs/streaming-image-volume-loader";
 
 
 function MprRender() {
-  const renderingEngineRef: any = useRef(null)
 
-  async function renderImage(element: Array<HTMLElement>) {
+  const renderImage = async (element: Array<HTMLElement>) => {
     const [elementA, elementB, elementC] = element
     const cornerstonePV = await initPVCore({ originPath: window.location.origin })
 
     const renderingEngineId = 'myRenderingEngineMPR'
     // const volumeId = 'cornerstoneStreamingImageVolume:CT_VOLUME_ID'
-    const volumeId = 'streaming-wadors:CT_VOLUME_ID'
+    const volumeId = 'cornerstoneStreamingImageVolume:CT_VOLUME_ID'
     const renderingEngine = new cornerstonePV.RenderingEngine(renderingEngineId)
 
-    renderingEngineRef.current = renderingEngine
     let arr = [
       // 'http://cleanown.cn:20009/api/main/wado?requestType=WADO&studyUID=1.2.392.200036.9116.2.6.1.16.1613459813.1574739488.992936&seriesUID=1.2.392.200036.9116.2.6.1.16.1613459813.1574758542.892335&objectUID=1.2.392.200036.9116.2.6.1.16.1613459813.1574758750.204108&type=application%2Fdicom&collectionId=c7a5c4df-1041-4946-b5ed-4f6dc961d57c&patientId=325617a4-ad33-4479-a6e1-3e41c75ddad5&contentType=dcm-jpeg',
       'http://cleanown.cn:20009/api/main/wado?requestType=WADO&studyUID=1.2.840.113704.1.111.10216.1633940392.41&seriesUID=1.2.840.113704.1.111.10208.1633940850.8&objectUID=1.2.840.113704.1.111.8964.1633940884.5505&type=application%2Fdicom&collectionId=6e1a6eb5-e19d-4a1f-8a8d-48a50c15e822&patientId=3c2c1f6f-0031-4d5a-be98-4101d6f0371f&contentType=dcm-jpeg&index=87',
@@ -39,14 +39,12 @@ function MprRender() {
     arr = arr.map(v => {
       return 'wadouri:' + v
     });
-
-    // const load = cornerstoneStreamingImageVolumeLoader
-    // cornerstonePV.volumeLoader.registerVolumeLoader('cornerstoneStreamingImageVolume', load)
+    // cornerstoneStreamingImageVolumeLoader(volumeId, { imageIds: arr })
+    // cornerstonePV.volumeLoader.registerUnknownVolumeLoader(cornerstoneStreamingImageVolumeLoader)
     // cornerstonePV.volumeLoader.registerVolumeLoader('cornerstoneStreamingImageVolume', cornerstoneStreamingImageVolumeLoader)
-    cornerstonePV.volumeLoader.registerVolumeLoader('streaming-wadors', sharedArrayBufferImageLoader)
+    // cornerstonePV.volumeLoader.registerVolumeLoader('streaming-wadors', sharedArrayBufferImageLoader)
 
     const volume = await cornerstonePV.volumeLoader.createAndCacheVolume(volumeId, { imageIds: arr })
-
     const viewportId1 = 'CT_AXIAL';
     const viewportId2 = 'CT_SAGITTAL';
 
@@ -71,7 +69,12 @@ function MprRender() {
 
     renderingEngine.setViewports(viewportInput)
 
-    volume.load();
+
+
+    await volume.load((e: any) => {
+      console.log(e, 'e');
+
+    });
 
     cornerstonePV.setVolumesForViewports(
       renderingEngine,
@@ -83,15 +86,15 @@ function MprRender() {
   }
 
   function setNext(s: number) {
-    const viewport = renderingEngineRef.current.getViewport('CT_AXIAL_STACK')
-    viewport.scroll(s, true, true)
+    // const viewport = renderingEngineRef.current.getViewport('CT_AXIAL_STACK')
+    // viewport.scroll(s, true, true)
   }
 
 
 
   useEffect(() => {
-    const request = new HTTP()
-    console.log({ request });
+    // const request = new HTTP()
+    // console.log({ request });
 
     const content = document.getElementById('cornerstoneMPR-1_1')
     if (content) {

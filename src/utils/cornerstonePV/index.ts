@@ -4,16 +4,38 @@ import { IStackViewport } from "../core/src/types";
 // import { IStackViewport } from "@cornerstonejs/core/dist/esm/types";
 import dicomParser from "dicom-parser";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
+import { imageLoader, volumeLoader } from '../core/src/index';
+import {
+  cornerstoneStreamingImageVolumeLoader,
+  sharedArrayBufferImageLoader,
+// } from '@cornerstonejs/streaming-image-volume-loader';
+} from '../streaming-image-volume-loader/src/index';
 
 interface initConfig {
   authFunc?: Function; // 获取需要加入Header的参数
   originPath?: String; // WADOImageLoader的worker依赖路径
 }
 
+export default function initVolumeLoader() {
+  volumeLoader.registerUnknownVolumeLoader(
+    cornerstoneStreamingImageVolumeLoader
+  );
+  volumeLoader.registerVolumeLoader(
+    'cornerstoneStreamingImageVolume',
+    cornerstoneStreamingImageVolumeLoader
+  );
+
+  imageLoader.registerImageLoader(
+    'streaming-wadors',
+    sharedArrayBufferImageLoader
+  );
+}
+
 async function initPVCore(initConfig: initConfig = {}) {
   if (window.cornerstonePV) {
     return window.cornerstonePV;
   }
+  initVolumeLoader()
   const { authFunc, originPath } = initConfig;
   cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
   cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
