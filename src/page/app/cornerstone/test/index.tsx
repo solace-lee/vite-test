@@ -7,7 +7,8 @@ import {
   Enums,
   volumeLoader,
   CONSTANTS,
-} from '../../../../utils/core';
+// } from '@cornerstonejs/core';
+} from '../../../../utils/core/src';
 import {
   initDemo,
   createImageIdsAndCacheMetaData,
@@ -19,7 +20,7 @@ const { ViewportType } = Enums;
 const { ORIENTATION } = CONSTANTS;
 
 
-function MprRender() {
+function TestRender() {
 
   async function renderImage(element: HTMLDivElement[]) {
     await initDemo();
@@ -32,8 +33,6 @@ function MprRender() {
       wadoRsRoot: 'https://d1qmxk7r72ysft.cloudfront.net/dicomweb',
       type: 'VOLUME',
     });
-    console.log(imageIds, 'imageIds');
-    
 
     const renderingEngineId = 'myRenderingEngine';
     const renderingEngine = new RenderingEngine(renderingEngineId);
@@ -115,4 +114,4 @@ function MprRender() {
   </div>
 }
 
-export default MprRender
+export default TestRender

@@ -39,9 +39,11 @@ function MprRender() {
     arr = arr.map(v => {
       return 'wadouri:' + v
     });
+
+    console.log(typeof cornerstoneStreamingImageVolumeLoader);
     // cornerstoneStreamingImageVolumeLoader(volumeId, { imageIds: arr })
-    // cornerstonePV.volumeLoader.registerUnknownVolumeLoader(cornerstoneStreamingImageVolumeLoader)
-    // cornerstonePV.volumeLoader.registerVolumeLoader('cornerstoneStreamingImageVolume', cornerstoneStreamingImageVolumeLoader)
+    cornerstonePV.volumeLoader.registerUnknownVolumeLoader(cornerstoneStreamingImageVolumeLoader)
+    cornerstonePV.volumeLoader.registerVolumeLoader('cornerstoneStreamingImageVolume', cornerstoneStreamingImageVolumeLoader)
     // cornerstonePV.volumeLoader.registerVolumeLoader('streaming-wadors', sharedArrayBufferImageLoader)
 
     const volume = await cornerstonePV.volumeLoader.createAndCacheVolume(volumeId, { imageIds: arr })

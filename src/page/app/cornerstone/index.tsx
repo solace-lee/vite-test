@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import ImageRender from "./imageRender";
 import * as cornerstone from '../../../utils/core/src/index'
-// import MprRender from "./mprRender";
-import MprRender from "./test/index";
+import MprRender from "./mprRender";
+import TestRender from "./test/index";
 
 declare global {
   interface Window {
@@ -24,11 +24,13 @@ function CornerstonePage(params: Props) {
 
   return <div>
     <div>CornerstonePageTest</div>
-    <MprRender />
     <div style={{ display: 'flex' }}>
       <ImageRender keyValue='1_1' />
       <ImageRender keyValue='1_2' />
     </div>
+    <MprRender />
+    <TestRender />
+
   </div>
 }
 
