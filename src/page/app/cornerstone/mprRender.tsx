@@ -7,10 +7,11 @@ import { Button } from "antd";
 // import { HTTP } from "@/common";
 import { initPVCore } from "../../../utils/cornerstonePV";
 import { ORIENTATION } from "../../../utils/core/src/constants";
+import wadoLoader from "../../../utils/cornerstonePV/imageLoader";
 // import { ORIENTATION } from "@cornerstonejs/core/dist/esm/constants";
 import { cornerstoneStreamingImageVolumeLoader } from "../../../utils/streaming-image-volume-loader/src/index";
 // import { cornerstoneStreamingImageVolumeLoader } from "@cornerstonejs/streaming-image-volume-loader";
-
+import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 
 function MprRender() {
 
@@ -40,51 +41,66 @@ function MprRender() {
       return 'wadouri:' + v
     });
 
-    console.log(typeof cornerstoneStreamingImageVolumeLoader);
-    // cornerstoneStreamingImageVolumeLoader(volumeId, { imageIds: arr })
+
     cornerstonePV.volumeLoader.registerUnknownVolumeLoader(cornerstoneStreamingImageVolumeLoader)
     cornerstonePV.volumeLoader.registerVolumeLoader('cornerstoneStreamingImageVolume', cornerstoneStreamingImageVolumeLoader)
-    // cornerstonePV.volumeLoader.registerVolumeLoader('streaming-wadors', sharedArrayBufferImageLoader)
 
-    const volume = await cornerstonePV.volumeLoader.createAndCacheVolume(volumeId, { imageIds: arr })
-    const viewportId1 = 'CT_AXIAL';
-    const viewportId2 = 'CT_SAGITTAL';
+    const result = await cornerstonePV.imageLoader.loadAndCacheImages(arr);
+    Promise.all(result).then(async res => {
+      // console.log(cornerstoneWADOImageLoader);
+      
+      res.forEach((instanceMetaData, index) => {
+        cornerstoneWADOImageLoader.wadors.metaDataManager.add(
+          arr[index],
+          instanceMetaData
+        );
+      })
+      
 
-    const viewportInput = [
-      {
-        viewportId: viewportId1,
-        element: elementA as HTMLDivElement,
-        type: cornerstonePV.Enums.ViewportType.ORTHOGRAPHIC,
-        defaultOptions: {
-          orientation: ORIENTATION.AXIAL,
+      const volume = await cornerstonePV.volumeLoader.createAndCacheVolume(volumeId, { imageIds: arr })
+      const viewportId1 = 'CT_AXIAL';
+      const viewportId2 = 'CT_SAGITTAL';
+
+      const viewportInput = [
+        {
+          viewportId: viewportId1,
+          element: elementA as HTMLDivElement,
+          type: cornerstonePV.Enums.ViewportType.ORTHOGRAPHIC,
+          defaultOptions: {
+            orientation: ORIENTATION.AXIAL,
+          },
         },
-      },
-      {
-        viewportId: viewportId2,
-        element: elementB as HTMLDivElement,
-        type: cornerstonePV.Enums.ViewportType.ORTHOGRAPHIC,
-        defaultOptions: {
-          orientation: ORIENTATION.SAGITTAL,
+        {
+          viewportId: viewportId2,
+          element: elementB as HTMLDivElement,
+          type: cornerstonePV.Enums.ViewportType.ORTHOGRAPHIC,
+          defaultOptions: {
+            orientation: ORIENTATION.SAGITTAL,
+          },
         },
-      },
-    ];
+      ];
 
-    renderingEngine.setViewports(viewportInput)
-
+      renderingEngine.setViewports(viewportInput)
 
 
-    await volume.load((e: any) => {
-      console.log(e, 'e');
 
+      await volume.load((e: any) => {
+        console.log(e, 'e');
+      });
+
+      cornerstonePV.setVolumesForViewports(
+        renderingEngine,
+        [{ volumeId }],
+        [viewportId1, viewportId2]
+      );
+
+      renderingEngine.renderViewports([viewportId1, viewportId2]);
     });
 
-    cornerstonePV.setVolumesForViewports(
-      renderingEngine,
-      [{ volumeId }],
-      [viewportId1, viewportId2]
-    );
 
-    renderingEngine.renderViewports([viewportId1, viewportId2]);
+
+
+
   }
 
   function setNext(s: number) {
@@ -113,6 +129,7 @@ function MprRender() {
       elementC.style.height = '500px'
       content.appendChild(elementA)
       content.appendChild(elementB)
+      wadoLoader({ originPath: window.location.origin })
       renderImage([elementA, elementB, elementC])
     }
 

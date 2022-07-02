@@ -8,9 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cornerstonejs/core": "file:cornerstonejs-core-0.13.9.tgz",
-    "@cornerstonejs/streaming-image-volume-loader": "file:cornerstonejs-streaming-image-volume-loader-0.4.9.tgz",
-    "@cornerstonejs/tools": "file:cornerstonejs-tools-0.20.11.tgz",
+    "@cornerstonejs/core": "^0.13.9",
+    "@cornerstonejs/streaming-image-volume-loader": "^0.4.9",
+    "@cornerstonejs/tools": "^0.20.11",
     "antd": "^4.19.5",
     "axios": "^0.27.2",
     "dcmjs": "^0.24.2",

@@ -304,25 +304,25 @@
   "resolved" "https://registry.npmjs.org/@cornerstonejs/codec-openjpeg/-/codec-openjpeg-0.1.1.tgz"
   "version" "0.1.1"
 
-"@cornerstonejs/core@^0.13.9", "@cornerstonejs/core@file:cornerstonejs-core-0.13.9.tgz":
-  "integrity" "sha512-m6YzA/rQaxu+XE3zn/1qwVreTHfRUQoIxOfQBLhG8+oI1P5oEPk9KE7YsmIGCTcoFPAKMKLb+bbpMsMDxt8rcQ=="
-  "resolved" "file:cornerstonejs-core-0.13.9.tgz"
+"@cornerstonejs/core@^0.13.9":
+  "integrity" "sha512-7xGS0EQTssVf/IeJDjBYDxeg1RAqrAWpyEQemSi03EfIdcoAHCLdYBcnNksWKR32at+45l47N7a+0qg8V9YzRg=="
+  "resolved" "https://registry.npmjs.org/@cornerstonejs/core/-/core-0.13.9.tgz"
   "version" "0.13.9"
   dependencies:
     "detect-gpu" "^4.0.7"
     "lodash.clonedeep" "4.5.0"
 
-"@cornerstonejs/streaming-image-volume-loader@file:cornerstonejs-streaming-image-volume-loader-0.4.9.tgz":
-  "integrity" "sha512-SmiOfiFV4LVvAON4ylLjxsC221TYi0szw8d6swBZzAosSuEAT4VrmvDPL8bFwltI6qng/Gjh2wIo71sl831kZg=="
-  "resolved" "file:cornerstonejs-streaming-image-volume-loader-0.4.9.tgz"
+"@cornerstonejs/streaming-image-volume-loader@^0.4.9":
+  "integrity" "sha512-B/DO1M0P+9yWBR54Cf8Fq6VvoQKM/2XvROC6omzxI9M/z8TwozxKQmPyQIec8dQeeCXRIb8j7j8TylRlaJ2Paw=="
+  "resolved" "https://registry.npmjs.org/@cornerstonejs/streaming-image-volume-loader/-/streaming-image-volume-loader-0.4.9.tgz"
   "version" "0.4.9"
   dependencies:
     "@cornerstonejs/core" "^0.13.9"
     "cornerstone-wado-image-loader" "^4.1.2"
 
-"@cornerstonejs/tools@file:cornerstonejs-tools-0.20.11.tgz":
-  "integrity" "sha512-4Qf6cqU62d6pAmL2ReEyHaJrmsShwILN3JXTD8wmYhg93E1leVZa3ZM3l5Pzp45V6Wi4laNPaqUMI+yndT5ewg=="
-  "resolved" "file:cornerstonejs-tools-0.20.11.tgz"
+"@cornerstonejs/tools@^0.20.11":
+  "integrity" "sha512-iutQ9YN1KTBlcWhx+rVFlz4Oi1iXgYpf/fUzHVX1Cdz8/jH+o87UCFdy4m/2qEd6bzFu45ytxjksxiC/HPqnHg=="
+  "resolved" "https://registry.npmjs.org/@cornerstonejs/tools/-/tools-0.20.11.tgz"
   "version" "0.20.11"
   dependencies:
     "@cornerstonejs/core" "^0.13.9"

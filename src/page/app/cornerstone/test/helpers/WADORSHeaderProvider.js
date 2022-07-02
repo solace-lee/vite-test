@@ -1,5 +1,5 @@
 import dcmjs from 'dcmjs';
-import { utilities as csUtils } from '@cornerstonejs/core';
+import { utilities as csUtils } from '../../../../../utils/core/src';
 const metadataHeadersPerImageId = {};
 const INSTANCE = 'instance';
 

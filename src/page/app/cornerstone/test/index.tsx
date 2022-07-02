@@ -7,7 +7,7 @@ import {
   Enums,
   volumeLoader,
   CONSTANTS,
-// } from '@cornerstonejs/core';
+  // } from '@cornerstonejs/core';
 } from '../../../../utils/core/src';
 import {
   initDemo,
