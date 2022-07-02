@@ -1,4 +1,4 @@
-import { Enums } from '@cornerstonejs/core';
+import { Enums } from '../../core/src';
 import {
   getPixelData,
   decodeImageFrame,

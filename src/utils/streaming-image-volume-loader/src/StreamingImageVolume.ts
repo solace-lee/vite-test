@@ -8,9 +8,9 @@ import {
   cache,
   imageLoader,
   utilities as csUtils,
-} from '@cornerstonejs/core';
+} from '../../core/src';
 
-import type { Types } from '@cornerstonejs/core';
+import type { Types } from '../../core/src';
 import { scaleArray, autoLoad } from './helpers';
 
 const requestType = Enums.RequestType.Prefetch;
