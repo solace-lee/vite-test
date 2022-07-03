@@ -50,6 +50,14 @@ async function initPVCore(initConfig: initConfig = {}) {
         "pv-token",
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzZXNzaW9uSWQiOiJzZXNzOjRiM2YwNmY3LTRjMDQtNDI2My1hNzZhLWNiMmMyNzVkZTlmNyIsImlhdCI6MTY1NjA2NDc5NX0.QAFy29r0QR3jH_-v-ZkKUiWlxMXA9pzMd1EakOabctI"
       );
+      xhr.setRequestHeader(
+        "Cross-Origin-Embedder-Policy",
+        "require-corp"
+      );
+      xhr.setRequestHeader(
+        "Cross-Origin-Opener-Policy",
+        "same-origin"
+      );
     },
   });
 

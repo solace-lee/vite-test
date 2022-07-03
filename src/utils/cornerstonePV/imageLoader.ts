@@ -9,7 +9,7 @@ interface initConfig {
 
 function wadoLoader(initConfig: initConfig = {}) {
   // console.log(cornerstoneStreamingImageVolumeLoader);
-
+  return
   const { authFunc, originPath } = initConfig;
   // cornerstoneWADOImageLoader.external.cornerstone = cornerstone;
   cornerstoneWADOImageLoader.external.dicomParser = dicomParser;
