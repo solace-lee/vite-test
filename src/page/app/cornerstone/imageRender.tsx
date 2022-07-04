@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import * as cornerstone from '../../../utils/core/src/index'
 import { IStackViewport } from "../../../utils/core/src/types";
 import { Button } from "antd";
-import { HTTP } from "@/common";
+import { Request } from "@/common";
 import { initPVCore } from "../../../utils/cornerstonePV";
 
 interface Props {
@@ -75,8 +75,8 @@ function ImageRender(props: Props) {
 
 
   useEffect(() => {
-    const request = new HTTP()
-    console.log({ request });
+    // const request = new Request()
+    // console.log({ request });
 
     const content = document.getElementById(`cornerstone3D-${keyValue}`)
     if (content) {

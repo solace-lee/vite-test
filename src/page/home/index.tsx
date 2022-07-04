@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import { useEffect, useState } from "react";
-import { HTTP } from "@/common";
+// import { HTTP } from "@/common";
+import { Outlet } from "react-router-dom";
 
 function PatientList() {
 
@@ -10,7 +11,7 @@ function PatientList() {
 
   function getList() {
     // console.log((new HTTP()) === (new HTTP()), (new HTTP())());
-    console.log((new HTTP()), '哈哈', HTTP());
+    // console.log((new HTTP()), '哈哈', HTTP());
     
     // const http = new HTTP().get('/all')
   }
@@ -22,12 +23,7 @@ function PatientList() {
       <Button>MPR</Button>
       <Button>融合</Button>
     </div>
-    <div>
-      <div></div>
-      <div>
-
-      </div>
-    </div>
+    <Outlet />
   </div>
 }
 

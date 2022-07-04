@@ -1,5 +1,5 @@
-import HTTP from "./http";
+import Request from "./http";
 
 export {
-  HTTP
+  Request
 }

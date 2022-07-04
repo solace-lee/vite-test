@@ -5,9 +5,8 @@ import './index.css'
 import './style.less'
 import RouterDom from './RouterDom'
 
+
 ReactDOM.render(
-  <React.StrictMode>
-    <RouterDom />
-  </React.StrictMode>,
+  <RouterDom />,
   document.getElementById('root')
 )
