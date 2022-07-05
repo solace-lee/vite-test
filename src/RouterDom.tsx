@@ -6,14 +6,14 @@ import Text from './page/app/text/index'
 import WebglTest from './page/app/webgl/index'
 import CornerstonePage from './page/app/cornerstone/index'
 import Home from './page/home'
-import PatientList from '@/page/home/patientList'
+import PatientList from './page/home/patientList'
 
 export default function RouterDom() {
 
   return <HashRouter>
     <Routes>
       <Route path='/patient/' element={<Home />} >
-        <Route path='cornerstone3D' element={<PatientList />} />
+        <Route path='patientList' element={<PatientList />} />
         <Route path='cornerstone3D' element={<CornerstonePage dom={null} />} />
       </Route>
       <Route path='/test/' element={<App />} >
