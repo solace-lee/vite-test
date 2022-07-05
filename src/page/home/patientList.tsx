@@ -1,6 +1,7 @@
 import { Button, Card, Input, message, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Request } from "../../common";
+import { PatientDataModel } from "./patientDataModal";
 
 function PatientList() {
   const [modelVisible, setModelVisible] = useState(false)
@@ -34,11 +35,19 @@ function PatientList() {
   async function getData() {
     const patientID = localStorage.getItem('patientID') || ''
     if (patientID) {
-      
-      const res = await Request.getInstance().get(`/api/main/patient/${patientID}/all`)
-      console.log(res, '患者数据');
 
+      const res = await Request.getInstance().get(`/api/main/patient/${patientID}/all`)
+      if (res.data.code === 200) {
+        const data = parseData(res.data.data as PatientDataModel)
+        console.log(res.data.data, data, '患者数据');
+      }
     }
+  }
+
+  function parseData(patientData:PatientDataModel) {
+    const newData = {}
+    patientData.cases.forEach()
+    return newData
   }
 
   function extraDetail(): React.ReactNode {
