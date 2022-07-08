@@ -1,7 +1,7 @@
-import { Button, Card, Input, message, Modal } from "antd";
+import { Button, Card, Input, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Request } from "../../common";
-import { CasesModel, PatientDataModel, SeriesModel } from "../../types/patientDataModal";
+import { CasesModel, SeriesModel } from "../../types/patientDataModal";
 import { useAppDispatch, useAppSelector } from '../../store';
 import { updatePatientInfo, updatePatientCases } from '../../store/patientReducer';
 import { updatePvImageIds } from '../../store/pvImageReducer';
@@ -44,7 +44,6 @@ function PatientList() {
 
       const res = await Request.getInstance().get(`/api/main/patient/${patientID}/all`)
       if (res.data.code === 200 && res.data.data) {
-        // const data = parseData(res.data.data as PatientDataModel)
         storeDispatch(updatePatientCases(res.data.data.cases as CasesModel[] || null))
         const { patient_name, modality, image_count, patient_sex, patient_id, id, fk_collection_id } = res.data.data
         storeDispatch(updatePatientInfo({
@@ -72,11 +71,19 @@ function PatientList() {
     </div>
   }
 
-  function selectSeries(seriesItem: SeriesModel): void {
-    storeDispatch(updatePvImageIds(null))
+  function selectSeries(seriesItem: SeriesModel, studyUID: string): void {
+    const baseUrl = 'http://cleanown.cn:20009/api/main/wado?requestType=WADO&'
+    const { sop_instance_list, series_instance_uid, fk_collection_id } = seriesItem
+
+    const ids: string[] = []
+    Object.values(sop_instance_list).forEach(v => {
+      const url = `${baseUrl}studyUID=${studyUID}&seriesUID=${series_instance_uid}&objectUID=${v.sop_UID}&type=application%2Fdicom&collectionId=${fk_collection_id}&patientId=${patientInfo?.patientId}&contentType=dcm-jpeg`
+      ids.push(url)
+    })
+    storeDispatch(updatePvImageIds(ids.length ? ids : null))
   }
 
-  function renderSeries(seriesItem: SeriesModel, index: number): React.ReactNode {
+  function renderSeries(seriesItem: SeriesModel, index: number, studyUID: string): React.ReactNode {
     return <div key={index} style={{ padding: '0 20px', margin: '6px', display: 'flex', alignItems: 'center', border: '1px solid #405eff', justifyContent: 'space-between' }}>
       <div style={{ padding: '12px' }}>
         <span>序列：{seriesItem.series_number},{seriesItem.series_description} | </span>
@@ -87,7 +94,7 @@ function PatientList() {
         <span>dose数量: {seriesItem.dose.length} | </span>
         <span>plan数量: {seriesItem.plan.length} | </span>
       </div>
-      <Button type='primary' onClick={() => selectSeries(seriesItem)}>选它</Button>
+      <Button type='primary' onClick={() => selectSeries(seriesItem, studyUID)}>选它</Button>
     </div>
   }
 
@@ -96,7 +103,7 @@ function PatientList() {
       <div>
         <span>cases日期：{casesItem.study_dateTime} | </span>
         <span>studyInstanceUid： {casesItem.study_instance_uid}</span>
-        {casesItem.series && casesItem.series.map(renderSeries)}
+        {casesItem.series && casesItem.series.map((v, i) => renderSeries(v, i, casesItem.study_instance_uid))}
       </div>
     </div>
   }
