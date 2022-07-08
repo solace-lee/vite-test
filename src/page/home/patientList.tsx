@@ -1,12 +1,16 @@
 import { Button, Card, Input, message, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Request } from "../../common";
-import { PatientDataModel } from "./patientDataModal";
+import { CasesModel, PatientDataModel } from "../../types/patientDataModal";
+import { useAppDispatch, useAppSelector } from '../../store';
+import { updatePatientInfo, updatePatientCases } from '../../store/patientReducer';
 
 function PatientList() {
   const [modelVisible, setModelVisible] = useState(false)
   const [currentDetail, setCrrentDetail] = useState('')
   const [title, setTitle] = useState('')
+  const storeDispatch = useAppDispatch()
+  const patientCases = useAppSelector(state => state.patient.cases)
 
   useEffect(() => {
     getData()
@@ -37,16 +41,18 @@ function PatientList() {
     if (patientID) {
 
       const res = await Request.getInstance().get(`/api/main/patient/${patientID}/all`)
-      if (res.data.code === 200) {
-        const data = parseData(res.data.data as PatientDataModel)
-        console.log(res.data.data, data, '患者数据');
+      if (res.data.code === 200 && res.data.data) {
+        // const data = parseData(res.data.data as PatientDataModel)
+        storeDispatch(updatePatientCases(res.data.data.cases as CasesModel[] || null))
+
+        console.log(res.data.data, '患者数据');
       }
     }
   }
 
-  function parseData(patientData:PatientDataModel) {
+  function parseData(patientData: PatientDataModel) {
     const newData = {}
-    patientData.cases.forEach()
+    // patientData.cases.forEach()
     return newData
   }
 
@@ -58,9 +64,14 @@ function PatientList() {
     </div>
   }
 
+  function renderCases(casesItem: CasesModel): React.ReactNode {
+    
+    return <div></div>
+  }
+
   return <div>
     <Card title='患者信息' extra={extraDetail()}>
-      患者列表
+      {patientCases && patientCases.map(renderCases)}
     </Card>
     <Modal
       visible={modelVisible}
