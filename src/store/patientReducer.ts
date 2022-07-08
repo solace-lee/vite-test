@@ -2,7 +2,15 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { CasesModel } from "../types/index";
 
 interface patientState {
-  info: object | null;
+  info: {
+    patientName: string;
+    modality: string;
+    imageCount: string;
+    patientSex: string;
+    patientId: string;
+    id: string;
+    fkCollectionId: string;
+  } | null;
   cases: CasesModel[] | null;
 }
 
@@ -15,7 +23,10 @@ export const patientReducer = createSlice({
   name: "patient",
   initialState,
   reducers: {
-    updatePatientInfo: (state, action: PayloadAction<object | null>) => {
+    updatePatientInfo: (
+      state,
+      action: PayloadAction<patientState["info"] | null>
+    ) => {
       state.info = action.payload;
     },
     updatePatientCases: (state, action: PayloadAction<CasesModel[] | null>) => {

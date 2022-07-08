@@ -1,9 +1,10 @@
 import { Button, Card, Input, message, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Request } from "../../common";
-import { CasesModel, PatientDataModel } from "../../types/patientDataModal";
+import { CasesModel, PatientDataModel, SeriesModel } from "../../types/patientDataModal";
 import { useAppDispatch, useAppSelector } from '../../store';
 import { updatePatientInfo, updatePatientCases } from '../../store/patientReducer';
+import { updatePvImageIds } from '../../store/pvImageReducer';
 
 function PatientList() {
   const [modelVisible, setModelVisible] = useState(false)
@@ -11,6 +12,7 @@ function PatientList() {
   const [title, setTitle] = useState('')
   const storeDispatch = useAppDispatch()
   const patientCases = useAppSelector(state => state.patient.cases)
+  const patientInfo = useAppSelector(state => state.patient.info)
 
   useEffect(() => {
     getData()
@@ -44,16 +46,22 @@ function PatientList() {
       if (res.data.code === 200 && res.data.data) {
         // const data = parseData(res.data.data as PatientDataModel)
         storeDispatch(updatePatientCases(res.data.data.cases as CasesModel[] || null))
-
+        const { patient_name, modality, image_count, patient_sex, patient_id, id, fk_collection_id } = res.data.data
+        storeDispatch(updatePatientInfo({
+          patientName: patient_name,
+          modality,
+          imageCount: image_count,
+          patientSex: patient_sex,
+          patientId: patient_id,
+          id,
+          fkCollectionId: fk_collection_id
+        }))
         console.log(res.data.data, '患者数据');
+      } else {
+        storeDispatch(updatePatientCases(null))
+        storeDispatch(updatePatientInfo(null))
       }
     }
-  }
-
-  function parseData(patientData: PatientDataModel) {
-    const newData = {}
-    // patientData.cases.forEach()
-    return newData
   }
 
   function extraDetail(): React.ReactNode {
@@ -64,13 +72,42 @@ function PatientList() {
     </div>
   }
 
-  function renderCases(casesItem: CasesModel): React.ReactNode {
-    
-    return <div></div>
+  function selectSeries(seriesItem: SeriesModel): void {
+    storeDispatch(updatePvImageIds(null))
+  }
+
+  function renderSeries(seriesItem: SeriesModel, index: number): React.ReactNode {
+    return <div key={index} style={{ padding: '0 20px', margin: '6px', display: 'flex', alignItems: 'center', border: '1px solid #405eff', justifyContent: 'space-between' }}>
+      <div style={{ padding: '12px' }}>
+        <span>序列：{seriesItem.series_number},{seriesItem.series_description} | </span>
+        <span>分辨率：{seriesItem.columns}/{seriesItem.rows} | </span>
+        <span>窗宽窗位: {seriesItem.window_width}/{seriesItem.window_center} | </span>
+        <span>层数: {seriesItem.num_of_instances} | </span>
+        <span>结构集数量: {seriesItem.structureSequences.length} | </span>
+        <span>dose数量: {seriesItem.dose.length} | </span>
+        <span>plan数量: {seriesItem.plan.length} | </span>
+      </div>
+      <Button type='primary' onClick={() => selectSeries(seriesItem)}>选它</Button>
+    </div>
+  }
+
+  function renderCases(casesItem: CasesModel, index: number): React.ReactNode {
+    return <div key={index}>
+      <div>
+        <span>cases日期：{casesItem.study_dateTime} | </span>
+        <span>studyInstanceUid： {casesItem.study_instance_uid}</span>
+        {casesItem.series && casesItem.series.map(renderSeries)}
+      </div>
+    </div>
   }
 
   return <div>
     <Card title='患者信息' extra={extraDetail()}>
+      <div>
+        <span>患者姓名：{patientInfo?.patientName} | </span>
+        <span>图像类型：{patientInfo?.modality} | </span>
+        <span>图像数量：{patientInfo?.imageCount} </span>
+      </div>
       {patientCases && patientCases.map(renderCases)}
     </Card>
     <Modal
