@@ -32,8 +32,6 @@ function loadImageFromImageLoader(
   options: ImageLoaderOptions
 ): IImageLoadObject {
   // Extract the image loader scheme: wadors:https://image1 => wadors
-  console.log(imageId, options);
-  
   const colonIndex = imageId.indexOf(':');
   const scheme = imageId.substring(0, colonIndex);
   const loader = imageLoaders[scheme];

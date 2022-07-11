@@ -73,9 +73,7 @@ export function removeAllProviders(): void {
 function getMetaData(type: string, imageId: string): any {
   // Invoke each provider in priority order until one returns something
   for (let i = 0; i < providers.length; i++) {
-    
     const result = providers[i].provider(type, imageId);
-    console.log(result, imageId, 'getMetaData');
 
     if (result !== undefined) {
       return result;
