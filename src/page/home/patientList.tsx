@@ -1,4 +1,4 @@
-import { Button, Card, Input, Modal } from "antd";
+import { Button, Card, Input, message, Modal } from "antd";
 import { useEffect, useState } from "react";
 import { Request } from "../../common";
 import { CasesModel, SeriesModel } from "../../types/patientDataModal";
@@ -77,10 +77,11 @@ function PatientList() {
 
     const ids: string[] = []
     Object.values(sop_instance_list).forEach(v => {
-      const url = `${baseUrl}studyUID=${studyUID}&seriesUID=${series_instance_uid}&objectUID=${v.sop_UID}&type=application%2Fdicom&collectionId=${fk_collection_id}&patientId=${patientInfo?.patientId}&contentType=dcm-jpeg`
+      const url = `${baseUrl}studyUID=${studyUID}&seriesUID=${series_instance_uid}&objectUID=${v.sop_UID}&type=application%2Fdicom&collectionId=${fk_collection_id}&patientId=${patientInfo?.id}&contentType=dcm-jpeg`
       ids.push(url)
     })
     storeDispatch(updatePvImageIds(ids.length ? ids : null))
+    message.success('图像列表创建成功')
   }
 
   function renderSeries(seriesItem: SeriesModel, index: number, studyUID: string): React.ReactNode {

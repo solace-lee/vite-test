@@ -1,25 +1,39 @@
 import { Button } from "antd";
-import { useEffect, useState } from "react";
-// import { use } from "react-router";
-// import { HTTP } from "@/common";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 
-function PatientList() {
+function PatientList(props: any) {
+  const navigate = useNavigate()
+  const { pathname } = useLocation()
+  const buttonList = [{
+    path: '/patient/patientList',
+    name: '患者列表'
+  }, {
+    path: '/patient/cornerstone3D',
+    name: '勾画'
+  }, {
+    path: '/patient/mpr',
+    name: 'MPR'
+  }, {
+    path: '/patient/fuse',
+    name: '融合'
+  }]
 
-  useEffect(() => {
-    getList()
-  }, [])
-
-  function getList() {
-
+  function jumpRouter(path: string) {
+    console.log(path);
+    navigate(path)
   }
 
   return <div>
     <div style={{ display: 'flex', justifyContent: 'end' }}>
-      <Button type="primary">患者列表</Button>
-      <Button type="default">勾画</Button>
-      <Button>MPR</Button>
-      <Button>融合</Button>
+      {buttonList.map(v => {
+        return <Button
+          key={v.path}
+          type={pathname === v.path ? 'primary' : 'default'}
+          onClick={() => jumpRouter(v.path)}
+        >
+          {v.name}
+        </Button>
+      })}
     </div>
     <Outlet />
   </div>
