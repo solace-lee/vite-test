@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { resolve } from "path";
 // import { getThemeVariables } from 'antd/dist/theme';
 import { VitePWA } from "vite-plugin-pwa";
@@ -19,7 +20,10 @@ export default (config) => {
     },
     resolve: {
       alias: {
-        "@": resolve(__dirname, "./src/"),
+        "@src": resolve(__dirname, "./src/"),
+        "@cornerstonejs/core": resolve(__dirname, "./src/utils/core/src"),
+        "@cornerstonejs/tools": resolve(__dirname, "./src/utils/tools/src"),
+        "@cornerstonejs/streaming-image-volume-loader": resolve(__dirname, "./src/utils/streaming-image-volume-loader/src")
       },
     },
     plugins: [
@@ -30,6 +34,7 @@ export default (config) => {
         },
       }),
       react(),
+      tsconfigPaths()
     ],
     css: {
       preprocessorOptions: {

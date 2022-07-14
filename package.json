@@ -8,20 +8,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cornerstonejs/core": "^0.13.9",
-    "@cornerstonejs/streaming-image-volume-loader": "^0.4.9",
-    "@cornerstonejs/tools": "^0.20.11",
     "@reduxjs/toolkit": "^1.8.3",
+    "@types/d3-interpolate": "^3.0.1",
     "antd": "^4.19.5",
     "axios": "^0.27.2",
+    "cornerstone-wado-image-loader": "^4.1.3",
     "dcmjs": "^0.24.2",
+    "dicom-parser": "^1.8.13",
     "dicomweb-client": "^0.8.4",
     "lodash.get": "^4.4.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^8.0.2",
     "react-router-dom": "^6.3.0",
-    "three": "^0.139.2"
+    "three": "^0.139.2",
+    "vite-tsconfig-paths": "^3.5.0"
+  },
+  "peerDependencies": {
+    "@kitware/vtk.js": "^25.2.0",
+    "gl-matrix": "^3.4.3"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",

@@ -26,7 +26,7 @@ function CornerstonePage(params: Props) {
     <div>CornerstonePageTest</div>
     <div style={{ display: 'flex' }}>
       <ImageRender keyValue='1_1' />
-      <ImageRender keyValue='1_2' />
+      {/* <ImageRender keyValue='1_2' /> */}
     </div>
     <MprRender />
     {/* <TestRender /> */}

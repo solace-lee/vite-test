@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-// import * as cornerstone from '@cornerstonejs/core'
-// import { IStackViewport } from "@cornerstonejs/core/dist/esm/types";
-import * as cornerstone from '../../../utils/core/src/index'
-import { IStackViewport } from "../../../utils/core/src/types";
+import { eventTarget, Enums } from '@cornerstonejs/core'
+import { IStackViewport } from "@cornerstonejs/core/dist/esm/types";
+// import * as cornerstone from '../../../utils/core/src/index'
+// import { IStackViewport } from "../../../utils/core/src/types";
 import { Button } from "antd";
 import { Request } from "@/common";
 import { initPVCore } from "../../../utils/cornerstonePV";
 import { useAppSelector } from '../../../store';
-import { ToolGroupManager, Enums as csToolsEnums } from "../../../utils/tools";
-import { ZoomTool, WindowLevelTool } from "../../../utils/tools/src";
+import { ToolGroupManager, Enums as csToolsEnums } from "@cornerstonejs/tools/index";
+import { ZoomTool, WindowLevelTool, addTool } from "@cornerstonejs/tools/index";
 
 interface Props {
   keyValue: String
@@ -66,13 +66,28 @@ function ImageRender(props: Props) {
     addTools(viewportId, renderingEngineId) // 添加工具
   }
 
+  console.log(eventTarget, 'eventTarget');
+  function _addCornerstoneEventListeners(): void {
+    // Clear any listeners that may already be set
+
+    eventTarget.addEventListener(
+      // TOOLS_EVENTS.ANNOTATION_MODIFIED,
+      
+    );
+  }
+
+
   // 添加工具
   function addTools(viewportId: string, renderingEngineId: string) {
-    const toolGroupId = 'myToolGroup'
+    console.log(ToolGroupManager, 'ToolGroupManager');
+
+    addTool(ZoomTool)
+    addTool(WindowLevelTool)
+    const toolGroupId = `myToolGroup${keyValue}`
     const toolGroup = ToolGroupManager.createToolGroup(toolGroupId)
     c3dRef.current.toolGroupId = toolGroupId
-    console.log(toolGroup);
-    
+    console.log(toolGroup, `myToolGroup${keyValue} 添加工具`);
+
     toolGroup?.addTool(ZoomTool.toolName)
     toolGroup?.addTool(WindowLevelTool.toolName)
 
@@ -86,25 +101,33 @@ function ImageRender(props: Props) {
 
   function zoomTool() {
     const toolGroup = ToolGroupManager.getToolGroup(c3dRef.current.toolGroupId)
-    console.log(c3dRef.current, toolGroup);
 
     toolGroup?.setToolActive(ZoomTool.toolName, {
       bindings: [
         {
-          mouseButton: csToolsEnums.MouseBindings.Secondary
+          mouseButton: csToolsEnums.MouseBindings.Auxiliary
         }
       ]
     })
+    console.log(toolGroup);
+
   }
 
   function wwc() {
-    c3dRef.current.toolGroup.setToolActive(WindowLevelTool.toolName, {
+    const toolGroup = ToolGroupManager.getToolGroup(c3dRef.current.toolGroupId)
+    if (!toolGroup) {
+      console.log('未知');
+
+      return
+    }
+    toolGroup.setToolActive(WindowLevelTool.toolName, {
       bindings: [
         {
           mouseButton: csToolsEnums.MouseBindings.Primary
         }
       ]
     })
+    console.log(toolGroup);
   }
 
 
@@ -129,7 +152,7 @@ function ImageRender(props: Props) {
     <Button onClick={() => setNext(1)}>下一张</Button>
     <Button onClick={zoomTool}>缩放工具</Button>
     <Button onClick={wwc}>窗宽窗位工具</Button>
-    <div id={`cornerstone3D-${keyValue}`}></div>
+    <div id={`cornerstone3D-${keyValue}`} onMouseDown={(e) => { e.stopPropagation(); e.preventDefault() }}></div>
   </div>
 }
 

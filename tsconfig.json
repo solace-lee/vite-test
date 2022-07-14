@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["DOM", "DOM.Iterable", "ESNext", "ES6"],
     "allowJs": false,
     "skipLibCheck": false,
     "esModuleInterop": false,
@@ -15,7 +15,15 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noImplicitThis": true
+    "noImplicitThis": true,
+    // "baseUrl": "./",
+    // "paths": {
+    //   "@cornerstonejs/streaming-image-volume-loader": [
+    //     "src/utils/streaming-image-volume-loader/src"
+    //   ],
+    //   "@cornerstonejs/core": ["src/utils/core/src"],
+    //   "@cornerstonejs/tools": ["src/utils/tools/src"]
+    // }
   },
   "include": ["src"],
   "references": [{
