@@ -1,19 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-// import * as cornerstone from '@cornerstonejs/core'
-// import { IStackViewport } from "@cornerstonejs/core/dist/esm/types";
-// import * as cornerstone from '../../../utils/core/src/index'
-// import { IStackViewport, VolumeLoaderFn } from "../../../utils/core/src/types";
 import { Button } from "antd";
 // import { HTTP } from "@/common";
-import { initPVCore } from "../../../utils/cornerstonePV";
-import { ORIENTATION } from "../../../utils/core/src/constants";
-import wadoLoader from "../../../utils/cornerstonePV/imageLoader";
-// import { ORIENTATION } from "@cornerstonejs/core/dist/esm/constants";
-import { cornerstoneStreamingImageVolumeLoader } from "../../../utils/streaming-image-volume-loader/src/index";
-// import { cornerstoneStreamingImageVolumeLoader } from "@cornerstonejs/streaming-image-volume-loader";
+import { initPVCore } from "@src/utils/cornerstonePV";
+import { CONSTANTS } from "@cornerstonejs/core";
+import wadoLoader from "@src/utils/cornerstonePV/imageLoader";
+import { cornerstoneStreamingImageVolumeLoader } from "@cornerstonejs/streaming-image-volume-loader";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
-import { useAppSelector } from '../../../store';
+import { useAppSelector } from '@src/store';
 
+const { ORIENTATION } = CONSTANTS
 function MprRender() {
   const pvImageIds = useAppSelector(state => state.pvImage.pvImageIds)
 

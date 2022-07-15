@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import ImageRender from "./imageRender";
-import * as cornerstone from '../../../utils/core/src/index'
+import * as cornerstone from '@src/utils/core/src/index'
 import MprRender from "./mprRender";
 // import TestRender from "./test/index";
 

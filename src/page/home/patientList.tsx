@@ -1,10 +1,10 @@
 import { Button, Card, Input, message, Modal } from "antd";
 import { useEffect, useState } from "react";
-import { Request } from "../../common";
-import { CasesModel, SeriesModel } from "../../types/patientDataModal";
-import { useAppDispatch, useAppSelector } from '../../store';
-import { updatePatientInfo, updatePatientCases } from '../../store/patientReducer';
-import { updatePvImageIds } from '../../store/pvImageReducer';
+import { Request } from "@src/common";
+import { CasesModel, SeriesModel } from "@src/types/patientDataModal";
+import { useAppDispatch, useAppSelector } from '@src/store';
+import { updatePatientInfo, updatePatientCases } from '@src/store/patientReducer';
+import { updatePvImageIds } from '@src/store/pvImageReducer';
 
 function PatientList() {
   const [modelVisible, setModelVisible] = useState(false)
