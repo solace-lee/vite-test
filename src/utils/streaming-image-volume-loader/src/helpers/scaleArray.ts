@@ -1,4 +1,4 @@
-import type { Types } from '../../../core/src';
+import type { Types } from '@cornerstonejs/core';
 
 /**
  * Given a pixel array, rescale the pixel values using the rescale slope and

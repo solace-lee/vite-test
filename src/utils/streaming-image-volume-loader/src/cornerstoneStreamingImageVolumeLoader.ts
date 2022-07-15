@@ -1,5 +1,5 @@
-import { cache, utilities, Enums } from '../../core/src';
-import type { Types } from '../../core/src';
+import { cache, utilities, Enums } from '@cornerstonejs/core';
+import type { Types } from '@cornerstonejs/core';
 import { vec3 } from 'gl-matrix';
 import { makeVolumeMetadata, sortImageIdsAndGetSpacing } from './helpers';
 import StreamingImageVolume from './StreamingImageVolume';

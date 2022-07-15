@@ -1,7 +1,5 @@
-// import { getRenderingEngines, utilities } from '@cornerstonejs/core';
-// import type { Types } from '@cornerstonejs/core';
-import { getRenderingEngines, utilities } from '../../../core/src';
-import type { Types } from '../../../core/src';
+import { getRenderingEngines, utilities } from '@cornerstonejs/core';
+import type { Types } from '@cornerstonejs/core';
 
 //import type { Types } from '@cornerstonejs/core'
 

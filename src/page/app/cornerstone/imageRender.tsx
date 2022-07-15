@@ -1,14 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { eventTarget, Enums } from '@cornerstonejs/core'
-import { IStackViewport } from "@cornerstonejs/core/dist/esm/types";
-// import * as cornerstone from '../../../utils/core/src/index'
-// import { IStackViewport } from "../../../utils/core/src/types";
+import { init as csToolsInit } from '@cornerstonejs/tools'
+import type { Types } from "@cornerstonejs/core";
 import { Button } from "antd";
-import { Request } from "@/common";
-import { initPVCore } from "../../../utils/cornerstonePV";
+// import { Request } from "@/common";
+import { initPVCore } from "@src/utils/cornerstonePV";
 import { useAppSelector } from '../../../store';
-import { ToolGroupManager, Enums as csToolsEnums } from "@cornerstonejs/tools/index";
-import { ZoomTool, WindowLevelTool, addTool } from "@cornerstonejs/tools/index";
+import { ToolGroupManager, Enums as csToolsEnums } from "@cornerstonejs/tools";
+import { ZoomTool, WindowLevelTool, addTool } from "@cornerstonejs/tools";
 
 interface Props {
   keyValue: String
@@ -21,7 +19,7 @@ function ImageRender(props: Props) {
   const c3dRef: any = useRef({})
 
   async function renderImage(element: HTMLElement) {
-
+    await csToolsInit()
     const cornerstonePV = await initPVCore({ originPath: window.location.origin })
 
     const renderingEngineId = `RenderingEngine${keyValue}`
@@ -54,7 +52,7 @@ function ImageRender(props: Props) {
         'wadouri:http://cleanown.cn:20009/api/main/wado?requestType=WADO&studyUID=1.2.840.113704.1.111.10216.1633940392.41&seriesUID=1.2.840.113704.1.111.10208.1633940850.8&objectUID=1.2.840.113704.1.111.8964.1633940883.5497&type=application%2Fdicom&collectionId=6e1a6eb5-e19d-4a1f-8a8d-48a50c15e822&patientId=3c2c1f6f-0031-4d5a-be98-4101d6f0371f&contentType=dcm-jpeg&index=95',
       ]
 
-    await (viewport as IStackViewport).setStack(arr, 3);
+    await (viewport as Types.IStackViewport).setStack(arr, 3);
 
 
     // debugger
@@ -64,16 +62,6 @@ function ImageRender(props: Props) {
     viewport.render()
 
     addTools(viewportId, renderingEngineId) // 添加工具
-  }
-
-  console.log(eventTarget, 'eventTarget');
-  function _addCornerstoneEventListeners(): void {
-    // Clear any listeners that may already be set
-
-    eventTarget.addEventListener(
-      // TOOLS_EVENTS.ANNOTATION_MODIFIED,
-      
-    );
   }
 
 

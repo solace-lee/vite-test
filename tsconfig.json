@@ -16,14 +16,15 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "noImplicitThis": true,
-    // "baseUrl": "./",
-    // "paths": {
-    //   "@cornerstonejs/streaming-image-volume-loader": [
-    //     "src/utils/streaming-image-volume-loader/src"
-    //   ],
-    //   "@cornerstonejs/core": ["src/utils/core/src"],
-    //   "@cornerstonejs/tools": ["src/utils/tools/src"]
-    // }
+    "baseUrl": "./",
+    "paths": {
+      "@cornerstonejs/streaming-image-volume-loader": [
+        "src/utils/streaming-image-volume-loader/src"
+      ],
+      "@cornerstonejs/core": ["src/utils/core/src"],
+      "@cornerstonejs/tools": ["src/utils/tools/src"],
+      "@src/*": ["src/*"]
+    }
   },
   "include": ["src"],
   "references": [{

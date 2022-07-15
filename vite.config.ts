@@ -20,7 +20,7 @@ export default (config) => {
     },
     resolve: {
       alias: {
-        "@src": resolve(__dirname, "./src/"),
+        "@src": resolve(__dirname, "./src"),
         "@cornerstonejs/core": resolve(__dirname, "./src/utils/core/src"),
         "@cornerstonejs/tools": resolve(__dirname, "./src/utils/tools/src"),
         "@cornerstonejs/streaming-image-volume-loader": resolve(__dirname, "./src/utils/streaming-image-volume-loader/src")
