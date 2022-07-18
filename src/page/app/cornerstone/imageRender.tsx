@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { init as csToolsInit } from '@cornerstonejs/tools'
 import type { Types } from "@cornerstonejs/core";
+import * as cornerstone from "@cornerstonejs/core";
 import { Button } from "antd";
 // import { Request } from "@/common";
 import { initPVCore } from "@src/utils/cornerstonePV";
@@ -15,12 +16,13 @@ interface Props {
 function ImageRender(props: Props) {
   const { keyValue } = props
   const pvImageIds = useAppSelector(state => state.pvImage.pvImageIds)
+  const coreIsInit = useAppSelector(state => state.pvCore.init)
 
   const c3dRef: any = useRef({})
 
   async function renderImage(element: HTMLElement) {
     await csToolsInit()
-    const cornerstonePV = await initPVCore({ originPath: window.location.origin })
+    const cornerstonePV = cornerstone
 
     const renderingEngineId = `RenderingEngine${keyValue}`
     const viewportId = 'CT_AXIAL_STACK'
@@ -123,7 +125,7 @@ function ImageRender(props: Props) {
   useEffect(() => {
     // const request = new Request()
     // console.log({ request });
-
+    if (!coreIsInit) return
     const content = document.getElementById(`cornerstone3D-${keyValue}`)
     if (content) {
       const element: HTMLDivElement = document.createElement('div')
@@ -133,7 +135,7 @@ function ImageRender(props: Props) {
       renderImage(element)
     }
 
-  }, [])
+  }, [coreIsInit])
 
   return <div>
     <Button onClick={() => setNext(-1)}>上一张</Button>

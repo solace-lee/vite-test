@@ -1,4 +1,4 @@
 import { initPVCore } from "./initPVCore";
-import * as initCornerstone from "./initCornerstone";
+import initPVstone from "./initCornerstone";
 
-export { initPVCore, initCornerstone };
+export { initPVCore, initPVstone };

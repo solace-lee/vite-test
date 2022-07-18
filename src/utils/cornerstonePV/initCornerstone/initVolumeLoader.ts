@@ -6,11 +6,11 @@ import {
 
 export default function initVolumeLoader() {
   volumeLoader.registerUnknownVolumeLoader(
-    cornerstoneStreamingImageVolumeLoader
+    cornerstoneStreamingImageVolumeLoader as any
   );
   volumeLoader.registerVolumeLoader(
     'cornerstoneStreamingImageVolume',
-    cornerstoneStreamingImageVolumeLoader
+    cornerstoneStreamingImageVolumeLoader as any
   );
 
   imageLoader.registerImageLoader(

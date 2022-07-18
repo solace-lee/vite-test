@@ -7,8 +7,22 @@ import WebglTest from './page/app/webgl/index'
 import CornerstonePage from './page/app/cornerstone/index'
 import Home from './page/home'
 import PatientList from './page/home/patientList'
+import { useEffect } from 'react'
+import { initPVstone } from '@src/utils/cornerstonePV'
+import { useAppDispatch } from "@src/store";
+import { updatePvCore } from '@src/store/coreReducer';
 
 export default function RouterDom() {
+  const storeDispatch = useAppDispatch()
+
+  useEffect(() => {
+    initCore()
+  }, [])
+
+  async function initCore() {
+    await initPVstone()
+    storeDispatch(updatePvCore(true))
+  }
 
   return <HashRouter>
     <Routes>
