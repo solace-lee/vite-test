@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { init as csToolsInit } from '@cornerstonejs/tools'
 import type { Types } from "@cornerstonejs/core";
-import * as cornerstone from "@cornerstonejs/core";
+// import * as cornerstone from "@cornerstonejs/core";
+import { RenderingEngine, Enums } from "@cornerstonejs/core";
 import { Button } from "antd";
 // import { Request } from "@/common";
-import { initPVCore } from "@src/utils/cornerstonePV";
-import { useAppSelector } from '../../../store';
+// import { initPVCore } from "@src/utils/cornerstonePV";
+import { useAppSelector } from '@src/store';
 import { ToolGroupManager, Enums as csToolsEnums } from "@cornerstonejs/tools";
 import { ZoomTool, WindowLevelTool, addTool } from "@cornerstonejs/tools";
 
@@ -22,11 +23,10 @@ function ImageRender(props: Props) {
 
   async function renderImage(element: HTMLElement) {
     await csToolsInit()
-    const cornerstonePV = cornerstone
 
     const renderingEngineId = `RenderingEngine${keyValue}`
     const viewportId = 'CT_AXIAL_STACK'
-    const renderingEngine = new cornerstonePV.RenderingEngine(renderingEngineId)
+    const renderingEngine = new RenderingEngine(renderingEngineId)
 
     c3dRef.current = { renderingEngine, viewportId, renderingEngineId }
 
@@ -34,7 +34,7 @@ function ImageRender(props: Props) {
       viewportId,
       element: element as HTMLDivElement,
       align: 'center',
-      type: cornerstonePV.Enums.ViewportType.STACK,
+      type: Enums.ViewportType.STACK,
     }
     renderingEngine.enableElement(viewportInput)
     const viewport = renderingEngine.getViewport(viewportInput.viewportId)
@@ -58,7 +58,6 @@ function ImageRender(props: Props) {
 
 
     // debugger
-    (window as any).cornerstone = cornerstonePV;
     (window as any).viewport = viewport;
 
     viewport.render()

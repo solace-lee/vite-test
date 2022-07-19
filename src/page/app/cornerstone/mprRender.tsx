@@ -1,24 +1,25 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { Button } from "antd";
 // import { HTTP } from "@/common";
-import { initPVCore } from "@src/utils/cornerstonePV";
-import { CONSTANTS } from "@cornerstonejs/core";
-import { cornerstoneStreamingImageVolumeLoader } from "@cornerstonejs/streaming-image-volume-loader";
+// import { initPVCore } from "@src/utils/cornerstonePV";
+import { CONSTANTS, RenderingEngine, volumeLoader, imageLoader, Enums, setVolumesForViewports } from "@cornerstonejs/core";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 import { useAppSelector } from '@src/store';
+// import type { Types } from "@cornerstonejs/core";
 
 const { ORIENTATION } = CONSTANTS
 function MprRender() {
   const pvImageIds = useAppSelector(state => state.pvImage.pvImageIds)
+  const coreIsInit = useAppSelector(state => state.pvCore.init)
 
   const renderImage = async (element: Array<HTMLElement>) => {
     const [elementA, elementB, elementC] = element
-    const cornerstonePV = await initPVCore({ originPath: window.location.origin })
+    // const cornerstonePV = await initPVCore({ originPath: window.location.origin })
 
     const renderingEngineId = 'myRenderingEngineMPR'
     // const volumeId = 'cornerstoneStreamingImageVolume:CT_VOLUME_ID'
     const volumeId = 'cornerstoneStreamingImageVolume:CT_VOLUME_ID'
-    const renderingEngine = new cornerstonePV.RenderingEngine(renderingEngineId)
+    const renderingEngine = new RenderingEngine(renderingEngineId)
 
     console.log(pvImageIds, 'pvImageIds');
 
@@ -39,13 +40,11 @@ function MprRender() {
       ];
 
 
-    cornerstonePV.volumeLoader.registerUnknownVolumeLoader(cornerstoneStreamingImageVolumeLoader)
-    cornerstonePV.volumeLoader.registerVolumeLoader('cornerstoneStreamingImageVolume', cornerstoneStreamingImageVolumeLoader)
+    // volumeLoader.registerUnknownVolumeLoader(cornerstoneStreamingImageVolumeLoader as any)
+    // volumeLoader.registerVolumeLoader('cornerstoneStreamingImageVolume', cornerstoneStreamingImageVolumeLoader as any)
 
-    const result = await cornerstonePV.imageLoader.loadAndCacheImages(arr);
+    const result = await imageLoader.loadAndCacheImages(arr);
     Promise.all(result).then(async res => {
-      // console.log(cornerstoneWADOImageLoader);
-
       res.forEach((instanceMetaData, index) => {
         cornerstoneWADOImageLoader.wadors.metaDataManager.add(
           arr[index],
@@ -54,7 +53,7 @@ function MprRender() {
       })
 
 
-      const volume = await cornerstonePV.volumeLoader.createAndCacheVolume(volumeId, { imageIds: arr })
+      const volume = await volumeLoader.createAndCacheVolume(volumeId, { imageIds: arr })
       const viewportId1 = 'CT_AXIAL';
       const viewportId2 = 'CT_SAGITTAL';
 
@@ -62,7 +61,7 @@ function MprRender() {
         {
           viewportId: viewportId1,
           element: elementA as HTMLDivElement,
-          type: cornerstonePV.Enums.ViewportType.ORTHOGRAPHIC,
+          type: Enums.ViewportType.ORTHOGRAPHIC,
           defaultOptions: {
             orientation: ORIENTATION.AXIAL,
           },
@@ -70,7 +69,7 @@ function MprRender() {
         {
           viewportId: viewportId2,
           element: elementB as HTMLDivElement,
-          type: cornerstonePV.Enums.ViewportType.ORTHOGRAPHIC,
+          type: Enums.ViewportType.ORTHOGRAPHIC,
           defaultOptions: {
             orientation: ORIENTATION.SAGITTAL,
           },
@@ -82,10 +81,10 @@ function MprRender() {
 
 
       await volume.load((e: any) => {
-        console.log(e, 'e');
+        console.log(e, 'volume.load');
       });
 
-      cornerstonePV.setVolumesForViewports(
+      setVolumesForViewports(
         renderingEngine,
         [{ volumeId }],
         [viewportId1, viewportId2]
@@ -111,6 +110,8 @@ function MprRender() {
     // const request = new HTTP()
     // console.log({ request });
 
+    if (!coreIsInit) return
+
     const content = document.getElementById('cornerstoneMPR-1_1')
     if (content) {
       content.style.display = 'flex';
@@ -129,7 +130,7 @@ function MprRender() {
       renderImage([elementA, elementB, elementC])
     }
 
-  }, [])
+  }, [coreIsInit])
 
   return <div>
     <Button onClick={() => setNext(-1)}>上一张</Button>
