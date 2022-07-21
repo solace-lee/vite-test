@@ -20,6 +20,7 @@ export default function RouterDom() {
   }, [])
 
   async function initCore() {
+    // 初始化cornerstone
     await initPVstone()
     storeDispatch(updatePvCore(true))
   }
