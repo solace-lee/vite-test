@@ -5,12 +5,14 @@ import { Button } from "antd";
 import { CONSTANTS, RenderingEngine, volumeLoader, imageLoader, Enums, setVolumesForViewports, getRenderingEngine } from "@cornerstonejs/core";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 import { useAppSelector } from '@src/store';
+import { BidirectionalTool, ToolGroupManager, Enums as csToolsEnums } from "@cornerstonejs/tools";
 // import type { Types } from "@cornerstonejs/core";
 
 const { ORIENTATION } = CONSTANTS
 function MprRender() {
   const pvImageIds = useAppSelector(state => state.pvImage.pvImageIds)
   const coreIsInit = useAppSelector(state => state.pvCore.init)
+  const toolGroupId = `myToolGroupMPR`
 
   const renderImage = async (element: Array<HTMLElement>) => {
     const [elementA, elementB, elementC] = element
@@ -103,9 +105,27 @@ function MprRender() {
 
   }
 
+  function initToolGroup() {
+    let toolGroup = ToolGroupManager.getToolGroup(toolGroupId)
+    if (!toolGroup) {
+      toolGroup = ToolGroupManager.createToolGroup(toolGroupId)
+
+      toolGroup?.addTool(BidirectionalTool.toolName)
+      toolGroup?.addViewport('CT_AXIAL', 'renderingEnginePV');
+      toolGroup?.addViewport('CT_SAGITTAL', 'renderingEnginePV');
+    }
+    return toolGroup
+  }
+
   function setNext(s: number) {
-    // const viewport = renderingEngineRef.current.getViewport('CT_AXIAL_STACK')
-    // viewport.scroll(s, true, true)
+    const toolGroup = initToolGroup()
+    toolGroup?.setToolActive(BidirectionalTool.toolName, {
+      bindings: [
+        {
+          mouseButton: csToolsEnums.MouseBindings.Primary, // Left Click
+        },
+      ],
+    });
   }
 
 
@@ -115,7 +135,6 @@ function MprRender() {
     // console.log({ request });
 
     if (!coreIsInit) return
-
     const content = document.getElementById('cornerstoneMPR-1_1')
     if (content) {
       content.style.display = 'flex';
