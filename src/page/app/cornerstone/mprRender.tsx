@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Button } from "antd";
 // import { HTTP } from "@/common";
 // import { initPVCore } from "@src/utils/cornerstonePV";
-import { CONSTANTS, RenderingEngine, volumeLoader, imageLoader, Enums, setVolumesForViewports } from "@cornerstonejs/core";
+import { CONSTANTS, RenderingEngine, volumeLoader, imageLoader, Enums, setVolumesForViewports, getRenderingEngine } from "@cornerstonejs/core";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 import { useAppSelector } from '@src/store';
 // import type { Types } from "@cornerstonejs/core";
@@ -16,10 +16,14 @@ function MprRender() {
     const [elementA, elementB, elementC] = element
     // const cornerstonePV = await initPVCore({ originPath: window.location.origin })
 
-    const renderingEngineId = 'myRenderingEngineMPR'
+    // const renderingEngineId = 'myRenderingEngineMPR'
+    const renderingEngineId = 'renderingEnginePV'
     // const volumeId = 'cornerstoneStreamingImageVolume:CT_VOLUME_ID'
     const volumeId = 'cornerstoneStreamingImageVolume:CT_VOLUME_ID'
-    const renderingEngine = new RenderingEngine(renderingEngineId)
+    // const renderingEngine = new RenderingEngine(renderingEngineId)
+    const renderingEngine = getRenderingEngine(renderingEngineId)
+    if (!renderingEngine) return
+
 
     console.log(pvImageIds, 'pvImageIds');
 

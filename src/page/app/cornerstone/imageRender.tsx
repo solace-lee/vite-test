@@ -2,13 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { init as csToolsInit } from '@cornerstonejs/tools'
 import type { Types } from "@cornerstonejs/core";
 import * as cornerstone from "@cornerstonejs/core";
-import { RenderingEngine, Enums } from "@cornerstonejs/core";
+import { RenderingEngine, Enums, getRenderingEngine } from "@cornerstonejs/core";
 import { Button } from "antd";
 // import { Request } from "@/common";
 // import { initPVCore } from "@src/utils/cornerstonePV";
 import { useAppSelector } from '@src/store';
 import { ToolGroupManager, Enums as csToolsEnums } from "@cornerstonejs/tools";
-import { ZoomTool, WindowLevelTool, addTool } from "@cornerstonejs/tools";
+import { ZoomTool, WindowLevelTool } from "@cornerstonejs/tools";
 
 interface Props {
   keyValue: String
@@ -18,15 +18,20 @@ function ImageRender(props: Props) {
   const { keyValue } = props
   const pvImageIds = useAppSelector(state => state.pvImage.pvImageIds)
   const coreIsInit = useAppSelector(state => state.pvCore.init)
+  const toolGroupId = `myToolGroup${keyValue}`
 
   const c3dRef: any = useRef({})
 
   async function renderImage(element: HTMLElement) {
     await csToolsInit()
 
-    const renderingEngineId = `RenderingEngine${keyValue}`
+    // const renderingEngineId = `RenderingEngine${keyValue}`
+    const renderingEngineId = `renderingEnginePV`
     const viewportId = 'CT_AXIAL_STACK'
-    const renderingEngine = new RenderingEngine(renderingEngineId)
+    // const renderingEngine = new RenderingEngine(renderingEngineId)
+    const renderingEngine = getRenderingEngine(renderingEngineId)
+    console.log(renderingEngine);
+    if (!renderingEngine) return
 
     c3dRef.current = { renderingEngine, viewportId, renderingEngineId }
 
@@ -67,7 +72,8 @@ function ImageRender(props: Props) {
 
   function test() {
     // 注销当前窗口新开窗口
-    const eng = (window as any).pvCore.getRenderingEngine('RenderingEngine1_1')
+    // const eng = (window as any).pvCore.getRenderingEngine('RenderingEngine1_1')
+    const eng = (window as any).pvCore.getRenderingEngine('renderingEnginePV')
     // eng.disableElement('CT_AXIAL_STACK')
     setTimeout(async () => {
       const content = document.getElementById('test')
@@ -101,6 +107,8 @@ function ImageRender(props: Props) {
         await (viewport as Types.IStackViewport).setStack(arr, 3);
 
         viewport.render()
+
+        addTools('test', 'renderingEnginePV')
       }
     }, 5000)
   }
@@ -110,10 +118,10 @@ function ImageRender(props: Props) {
   function addTools(viewportId: string, renderingEngineId: string) {
     console.log(ToolGroupManager, 'ToolGroupManager');
 
-    addTool(ZoomTool)
-    addTool(WindowLevelTool)
-    const toolGroupId = `myToolGroup${keyValue}`
-    const toolGroup = ToolGroupManager.createToolGroup(toolGroupId)
+    let toolGroup = ToolGroupManager.createToolGroup(toolGroupId)
+    if (!toolGroup) {
+      toolGroup = ToolGroupManager.getToolGroup(toolGroupId)
+    }
     c3dRef.current.toolGroupId = toolGroupId
     console.log(toolGroup, `myToolGroup${keyValue} 添加工具`);
 
