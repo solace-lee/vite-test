@@ -5,7 +5,7 @@ import { Button } from "antd";
 import { CONSTANTS, RenderingEngine, volumeLoader, imageLoader, Enums, setVolumesForViewports, getRenderingEngine } from "@cornerstonejs/core";
 import cornerstoneWADOImageLoader from "cornerstone-wado-image-loader";
 import { useAppSelector } from '@src/store';
-import { BidirectionalTool, ToolGroupManager, Enums as csToolsEnums } from "@cornerstonejs/tools";
+import { BidirectionalTool, ToolGroupManager, Enums as csToolsEnums, SegmentationDisplayTool, BrushTool, segmentation } from "@cornerstonejs/tools";
 // import type { Types } from "@cornerstonejs/core";
 
 const { ORIENTATION } = CONSTANTS
@@ -15,7 +15,7 @@ function MprRender() {
   const toolGroupId = `myToolGroupMPR`
   const renderingEngineId = 'myRenderingEngineMPR'
   // const renderingEngineId = 'renderingEnginePV'
-
+  const segmentationId = 'MY_SEGMENTATION_ID';
 
   const renderImage = async (element: Array<HTMLElement>) => {
     const [elementA, elementB, elementC] = element
@@ -57,7 +57,29 @@ function MprRender() {
       })
 
 
-      const volume = await volumeLoader.createAndCacheVolume(volumeId, { imageIds: arr })
+      const volume = await volumeLoader.createAndCacheVolume(volumeId, {
+        imageIds: arr
+      })
+
+      await volumeLoader.createAndCacheDerivedVolume(volumeId, {
+        volumeId: segmentationId
+      })
+
+      segmentation.addSegmentations([
+        {
+          segmentationId,
+          representation: {
+            // The type of segmentation
+            type: csToolsEnums.SegmentationRepresentations.Labelmap,
+            // The actual segmentation data, in the case of labelmap this is a
+            // reference to the source volume of the segmentation.
+            data: {
+              volumeId: segmentationId,
+            },
+          },
+        },
+      ]);
+
       const viewportId1 = 'CT_AXIAL';
       const viewportId2 = 'CT_SAGITTAL';
       const viewportId3 = 'CT_CORONAL';
@@ -99,9 +121,22 @@ function MprRender() {
 
       setVolumesForViewports(
         renderingEngine,
-        [{ volumeId }],
+        [
+          {
+            volumeId,
+            callback: ({ volumeActor }) => {
+              // set the windowLevel after the volumeActor is created
+              volumeActor
+                .getProperty()
+                .getRGBTransferFunction(0)
+                .setMappingRange(-180, 220);
+            },
+          },
+        ],
         [viewportId1, viewportId2, viewportId3]
       );
+
+      
 
       renderingEngine.renderViewports([viewportId1, viewportId2, viewportId3]);
     });
@@ -118,21 +153,43 @@ function MprRender() {
       toolGroup = ToolGroupManager.createToolGroup(toolGroupId)
 
       toolGroup?.addTool(BidirectionalTool.toolName)
+      toolGroup?.addTool(SegmentationDisplayTool.toolName)
+      toolGroup?.addTool(BrushTool.toolName)
       toolGroup?.addViewport('CT_AXIAL', renderingEngineId);
       toolGroup?.addViewport('CT_SAGITTAL', renderingEngineId);
     }
     return toolGroup
   }
 
-  function setNext(s: number) {
+  async function setNext(s: number) {
     const toolGroup = initToolGroup()
-    toolGroup?.setToolActive(BidirectionalTool.toolName, {
-      bindings: [
-        {
-          mouseButton: csToolsEnums.MouseBindings.Primary, // Left Click
-        },
-      ],
+    toolGroup?.setToolEnabled(SegmentationDisplayTool.toolName);
+
+    await segmentation.addSegmentationRepresentations(toolGroupId, [
+      {
+        segmentationId,
+        type: csToolsEnums.SegmentationRepresentations.Labelmap,
+      },
+    ]);
+
+    toolGroup?.setToolActive(BrushTool.toolName, {
+      bindings: [{ mouseButton: csToolsEnums.MouseBindings.Primary }],
     });
+
+    // toolGroup?.setToolActive(SegmentationDisplayTool.toolName, {
+    //   bindings: [
+    //     {
+    //       mouseButton: csToolsEnums.MouseBindings.Primary, // Left Click
+    //     },
+    //   ],
+    // });
+    // toolGroup?.setToolActive(BrushTool.toolName, {
+    //   bindings: [
+    //     {
+    //       mouseButton: csToolsEnums.MouseBindings.Auxiliary, // Left Click
+    //     },
+    //   ],
+    // });
   }
 
 

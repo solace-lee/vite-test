@@ -48,6 +48,8 @@ export default async function initPVstone() {
   addTool(ZoomTool);
   addTool(WindowLevelTool);
   addTool(BidirectionalTool);
+  addTool(SegmentationDisplayTool);
+  addTool(BrushTool);
 
   // 初始化renderingEngine
   const renderingEngineId = "renderingEnginePV";
